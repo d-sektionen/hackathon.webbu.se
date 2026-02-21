@@ -1,7 +1,7 @@
 [project]
 name = "api"
 version = "0.1.0"
-description = "Add your description here"
+description = "Better backend for hackathon (not written in django)"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
