@@ -11,17 +11,21 @@
     "pollen": "pollen -o app/pollen.css"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "formik": "^2.4.9",
     "next": "16.1.6",
-    "pollen-css": "^5.0.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "unocss": "^66.6.0"
+    "react-icons": "^5.5.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@unocss/postcss": "^65",
+    "pollen-css": "^5.0.2",
     "typescript": "^5"
   }
 }

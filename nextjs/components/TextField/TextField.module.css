@@ -1,0 +1,35 @@
+.textField {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  & input {
+    width: 100%;
+    background-color: var(--color-teal-900);
+    border: solid var(--color-teal-900);
+    padding: var(--size-2);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+  }
+
+  &:disabled {
+    opacity: 60%;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  &.invalid {
+    & .label {
+      color: var(--color-rose);
+    }
+    & input {
+      border: solid var(--color-rose-600);
+    }
+  }
+}
+
+.label {
+  font: var(--font-body-sm);
+  font-family: var(--font-mono);
+  margin: var(--size-1);
+}

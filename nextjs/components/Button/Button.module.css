@@ -1,0 +1,44 @@
+/** biome-ignore-all lint/correctness/noUnknownPseudoClass: <explanation> */
+.button {
+  display: block;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: var(--font-button);
+  padding: var(--size-2) var(--size-3);
+
+  &.hasIcon {
+    padding: var(--size-2);
+  }
+
+  &.hasText {
+    padding: var(--size-3);
+  }
+
+  &:global(.variant-primary) {
+    background-color: var(--color-teal-300);
+    color: var(--color-teal-900);
+
+    &:hover,
+    &:focus {
+      background-color: var(--color-teal-300);
+    }
+  }
+
+  &:global(.variant-secondary) {
+    background-color: var(--lighten-10);
+
+    &:hover,
+    &:focus {
+      background-color: var(--lighten-20);
+    }
+  }
+
+  &:global(.variant-link) {
+    background-color: transparent;
+
+    &:hover,
+    &:focus {
+      background-color: rgb(255 255 255 / 10%);
+    }
+  }
+}

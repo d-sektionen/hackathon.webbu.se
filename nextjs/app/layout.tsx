@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar/Navbar";
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -35,7 +35,12 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${ibmPlexSerif.variable}`}
       >
-        <Navbar />
+        <Navbar
+          links={[
+            { label: "Register", href: "/register" },
+            { label: "Sign in", href: "/signin" },
+          ]}
+        />
         {children}
       </body>
     </html>
