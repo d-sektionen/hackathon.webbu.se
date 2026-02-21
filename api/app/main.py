@@ -33,16 +33,6 @@ async def verify_token(token: str, conn: Connection):
     return session
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
-
-
 @app.post("/login")
 async def login(name: str, password: str, conn: Connection = Depends(get_db)):
     user = await db.get_user_by_name(name, conn)
