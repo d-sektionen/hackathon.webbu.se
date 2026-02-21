@@ -5,7 +5,7 @@ CREATE TABLE projects (
   description text NOT NULL,
   github_url text,
   owner_user_id uuid NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  created_at timestamptz NOT NULL DEFAULT now(),
+  created_at timestamptz NOT NULL DEFAULT now()
 );
 
 -- migrate:down
