@@ -23,6 +23,7 @@ services:
       - "3000:3000"
     volumes:
       - ./nextjs/app:/app/app
+      - ./nextjs/components:/app/components
       - ./nextjs/public:/app/public
     env_file: .env
     environment:
