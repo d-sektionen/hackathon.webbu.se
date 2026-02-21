@@ -8,3 +8,8 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "fastapi[standard]>=0.129.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.2",
+]
