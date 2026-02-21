@@ -32,7 +32,7 @@ async def close_pool(app: FastAPI):
 @dataclass
 class User:
     id: UUID
-    name: str
+    email: str
     password: str
     is_admin: bool
     created_at: datetime
@@ -55,17 +55,17 @@ class Project:
     created_at: datetime
 
 
-async def add_user(name: str, password: str, db: Connection) -> User:
+async def add_user(email: str, password: str, db: Connection) -> User:
     user: Record | None = await db.fetchrow(
-        "INSERT INTO users (name, password) VALUES ($1, $2) RETURNING *", name, password
+        "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *", email, password
     )
     if user is None:
         raise Exception("Failed to create user")
     return User(**dict(user))
 
 
-async def get_user_by_name(name: str, db: Connection) -> User | None:
-    user: Record | None = await db.fetchrow("SELECT * FROM users WHERE name = $1", name)
+async def get_user_by_email(email: str, db: Connection) -> User | None:
+    user: Record | None = await db.fetchrow("SELECT * FROM users WHERE email = $1", email)
 
     if user is None:
         return None

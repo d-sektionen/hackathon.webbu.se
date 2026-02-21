@@ -10,12 +10,12 @@ router = APIRouter()
 
 
 class Login(BaseModel):
-    name: str
+    email: str
     password: str
 
 
 class Signup(BaseModel):
-    name: str
+    email: str
     password: str
 
 
@@ -33,14 +33,14 @@ async def login(
     if login is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Missing username or password"
+            detail="Missing email or password"
         )
 
-    user = await db.get_user_by_name(login.name, conn)
+    user = await db.get_user_by_email(login.email, conn)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect username or password"
+            detail="Incorrect email or password"
         )
 
     ph = argon2.PasswordHasher()
@@ -49,7 +49,7 @@ async def login(
     except argon2.exceptions.VerifyMismatchError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect username or password"
+            detail="Incorrect email or password"
         )
 
     session = await db.add_session(user.id, conn)
@@ -76,17 +76,17 @@ async def signup(
             detail="Password must be at least 8 characters long"
         )
 
-    previous_user = await db.get_user_by_name(signup_data.name, conn)
+    previous_user = await db.get_user_by_email(signup_data.email, conn)
     if previous_user is not None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already taken"
+            detail="email already in use"
         )
 
     ph = argon2.PasswordHasher()
     hashed_password = ph.hash(signup_data.password)
 
-    user = await db.add_user(signup_data.name, hashed_password, conn)
+    user = await db.add_user(signup_data.email, hashed_password, conn)
     session = await db.add_session(user.id, conn)
 
     response.set_cookie(
