@@ -51,6 +51,9 @@ async def login(name: str, password: str, conn: Connection = Depends(get_db)):
 
 @app.post("/signup")
 async def signup(name: str, password: str, conn: Connection = Depends(get_db)):
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+
     ph = argon2.PasswordHasher()
     hashed_password = ph.hash(password)
 
