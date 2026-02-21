@@ -1,4 +1,9 @@
 {
-  "project_name": "hackathon.webbu.se",
-  "tab_size": 2,
+    "project_name": "hackathon.webbu.se",
+    "languages": {
+        "Python": {
+            "tab_size": 4,
+        },
+    },
+    "tab_size": 2,
 }
