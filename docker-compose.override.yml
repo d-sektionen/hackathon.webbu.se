@@ -25,6 +25,7 @@ services:
       - ./nextjs/app:/app/app
       - ./nextjs/components:/app/components
       - ./nextjs/public:/app/public
+      - ./nextjs/lib:/app/lib
     env_file: .env
     environment:
       BASE_URL: http://localhost:3000

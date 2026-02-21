@@ -14,13 +14,9 @@
     padding: var(--size-3);
   }
 
-  &:focus {
-    outline: 2px solid var(--color-teal-300);
-    outline-offset: 2px;
-  }
-
   &:global(.variant-primary) {
-    background-color: var(--color-teal-400);
+    background-color: var(--color-teal-300);
+    color: var(--color-teal-900);
 
     &:hover,
     &:focus {

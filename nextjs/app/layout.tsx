@@ -4,19 +4,19 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar/Navbar";
 
 const ibmPlexSans = IBM_Plex_Sans({
-  variable: "--ff-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
 const ibmPlexSerif = IBM_Plex_Serif({
   weight: ["200", "400", "600"],
-  variable: "--ff-serif",
+  variable: "--font-serif",
   subsets: ["latin"],
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   weight: "400",
-  variable: "--ff-mono",
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 

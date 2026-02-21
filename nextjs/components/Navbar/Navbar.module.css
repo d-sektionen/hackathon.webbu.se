@@ -2,7 +2,7 @@
   padding: var(--size-1);
   background-color: var(--color-teal-950);
   border-radius: var(--radius-md);
-  margin: var(--size-2);
+  margin: var(--size-4) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,19 +31,21 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  transition: all 0.125s allow-discrete;
+  transition: all 0.25s allow-discrete;
   opacity: 0;
-  transform: translateY(var(--size-1));
+  padding: var(--size-1);
+  gap: var(--size-1);
+  transform: translateX(var(--size-2));
 }
 
 .menu:popover-open {
   opacity: 100%;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 @starting-style {
   .menu:popover-open {
     opacity: 0;
-    transform: translateY(var(--size-1));
+    transform: translateX(var(--size-2));
   }
 }
