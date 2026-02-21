@@ -10,14 +10,12 @@ class GitHubRepo:
     repo: str
 
 
-"""
-Matches https and http github urls
-Raises:
-- ValueError if the URL is not a valid GitHub repository URL
-"""
-
-
 def match_github_url(url) -> GitHubRepo:
+    """
+    Matches https and http github urls
+    Raises:
+    - ValueError if the URL is not a valid GitHub repository URL
+    """
     needle = r"(?:https?://github\.com/|git@github\.com[:/])(?P<owner>[\w-]+)/(?P<repo>[\w.-]+?)(?:\.git)?(?:/.*)?$"
 
     match = re.search(needle, url)
