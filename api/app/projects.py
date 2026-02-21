@@ -1,7 +1,8 @@
 import uuid
 
 from asyncpg import Connection
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
 from . import db, utils
@@ -90,7 +91,10 @@ async def update_project(
     return {"status": "success", "project": updated_project}
 
 
-@router.get("/projects/{project_id}/readme")
+@router.get(
+    "/projects/{project_id}/readme",
+    response_class=PlainTextResponse,
+)
 async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(get_db)):
     """Fetch the project README via the GitHub API.
 
@@ -118,4 +122,4 @@ async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(ge
 
     readme_content = await utils.fetch_github_readme(project.github_url)
 
-    return Response(content=readme_content, media_type="text/plain; charset=utf-8")
+    return PlainTextResponse(content=readme_content)
