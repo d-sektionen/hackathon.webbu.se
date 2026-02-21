@@ -9,11 +9,14 @@ class GitHubRepo:
     owner: str
     repo: str
 
+
 """
 Matches https and http github urls
 Raises:
 - ValueError if the URL is not a valid GitHub repository URL
 """
+
+
 def match_github_url(url) -> GitHubRepo:
     needle = r"(?:https?://github\.com/|git@github\.com[:/])(?P<owner>[\w-]+)/(?P<repo>[\w.-]+?)(?:\.git)?(?:/.*)?$"
 
@@ -35,7 +38,9 @@ def match_github_url(url) -> GitHubRepo:
 
 
 async def fetch_github_readme(github_repo_url: str) -> str:
-    repo = match_github_url(github_repo_url)  # Validate the URL and extract owner/repo, but we don't actually need them here
+    repo = match_github_url(
+        github_repo_url
+    )  # Validate the URL and extract owner/repo, but we don't actually need them here
 
     USER_AGENT = "WebbU-Hackathon-hackathon.webbu.se"
 
