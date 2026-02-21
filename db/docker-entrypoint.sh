@@ -1,0 +1,2 @@
+dbmate migrate up
+postgres

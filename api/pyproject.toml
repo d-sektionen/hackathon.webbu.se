@@ -6,5 +6,11 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "argon2-cffi>=25.1.0",
+    "asyncpg>=0.31.0",
     "fastapi[standard]>=0.129.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.2",
 ]

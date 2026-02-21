@@ -1,12 +1,12 @@
 services:
   postgres:
-    image: postgres:latest
+    image: registry.d-sektionen.se/hackathon.webbu.se_postgres:production
     volumes:
       - postgres_data:/var/lib/postgresql
     environment:
       POSTGRES_USER: hackathon
       POSTGRES_DB: hackathon
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     networks:
       - internal
     restart: unless-stopped
