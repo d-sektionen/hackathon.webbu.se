@@ -1,9 +1,14 @@
 services:
   postgres:
+    image: ""
+    build:
+      context: db
+      dockerfile: Dockerfile
     ports:
       - "5432:5432"
     volumes:
       - ".dev/db/dumps:/dumps"
+    env_file: .env
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_DB: ${DATABASE_NAME}
@@ -19,6 +24,7 @@ services:
     volumes:
       - ./nextjs/app:/app/app
       - ./nextjs/public:/app/public
+    env_file: .env
     environment:
       BASE_URL: http://localhost:3000
       API_BASE_URL: http://localhost:3001
@@ -33,4 +39,5 @@ services:
       - ./api/src:/app/src
     ports:
       - "3001:3000"
+    env_file: .env
     restart: unless-stopped
