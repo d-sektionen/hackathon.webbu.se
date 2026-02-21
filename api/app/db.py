@@ -47,3 +47,7 @@ async def add_session(user_id: UUID, db: Connection) -> Session:
         raise Exception("Failed to create session")
 
     return session
+
+async def get_session_by_token(token: UUID, db: Connection) -> Session | None:
+    session: Session | None = await db.fetchrow("SELECT * FROM sessions WHERE token = $1", token)
+    return session
