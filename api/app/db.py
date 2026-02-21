@@ -1,10 +1,10 @@
 import os
+from dataclasses import dataclass
 from datetime import datetime
-from typing import NamedTuple
 from uuid import UUID
 
 import asyncpg
-from asyncpg import Connection, Pool
+from asyncpg import Connection, Record
 from fastapi import FastAPI
 
 
@@ -29,7 +29,8 @@ async def close_pool(app: FastAPI):
     await app.state.pool.close()
 
 
-class User(NamedTuple):
+@dataclass
+class User():
     id: UUID
     name: str
     password: str
@@ -37,13 +38,15 @@ class User(NamedTuple):
     created_at: datetime
 
 
-class Session(NamedTuple):
+@dataclass
+class Session():
     user_id: UUID
     token: UUID
     created_at: datetime
 
 
-class Project(NamedTuple):
+@dataclass
+class Project():
     id: UUID
     name: str
     description: str
@@ -53,36 +56,41 @@ class Project(NamedTuple):
 
 
 async def add_user(name: str, password: str, db: Connection) -> User:
-    user: User | None = await db.fetchrow(
+    user: Record | None = await db.fetchrow(
         "INSERT INTO users (name, password) VALUES ($1, $2) RETURNING *", name, password
     )
     if user is None:
         raise Exception("Failed to create user")
-    return user
+    return User(**dict(user))
 
 
 async def get_user_by_name(name: str, db: Connection) -> User | None:
-    user: User | None = await db.fetchrow("SELECT * FROM users WHERE name = $1", name)
-    return user
+    user: Record | None = await db.fetchrow("SELECT * FROM users WHERE name = $1", name)
+
+    if user is None:
+        return None
+    return User(**dict(user))
 
 
 async def add_session(user_id: UUID, db: Connection) -> Session:
-    session: Session | None = await db.fetchrow(
+    session: Record | None = await db.fetchrow(
         "INSERT INTO sessions (user_id) VALUES ($1) RETURNING *", user_id
     )
     if session is None:
         raise Exception("Failed to create session")
 
-    return session
+    return Session(**dict(session))
 
 async def get_session_by_token(token: UUID, db: Connection) -> Session | None:
-    session: Session | None = await db.fetchrow(
+    session: Record | None = await db.fetchrow(
         "SELECT * FROM sessions WHERE token = $1", token
     )
-    return session
+    if session is None:
+        return None
+    return Session(**dict(session))
 
 async def add_project(name: str, description: str, github_url: str | None, owner_user_id: UUID, db: Connection) -> Project:
-    project: Project | None = await db.fetchrow(
+    project: Record | None = await db.fetchrow(
         "INSERT INTO projects (name, description, github_url, owner_user_id) VALUES ($1, $2, $3, $4) RETURNING *",
         name,
         description,
@@ -91,14 +99,14 @@ async def add_project(name: str, description: str, github_url: str | None, owner
     )
     if project is None:
         raise Exception("Failed to create project")
-    return project
+    return Project(**dict(project))
 
 async def get_all_projects(db: Connection) -> list[Project]:
     projects = await db.fetch("SELECT * FROM projects")
     return [Project(**project) for project in projects]
 
 async def get_project_by_id(project_id: UUID, db: Connection) -> Project | None:
-    project: Project | None = await db.fetchrow("SELECT * FROM projects WHERE id = $1", project_id)
+    project: Record | None = await db.fetchrow("SELECT * FROM projects WHERE id = $1", project_id)
     if project is None:
         return None
-    return project
+    return Project(**dict(project))
