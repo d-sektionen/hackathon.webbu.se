@@ -2,11 +2,10 @@ import uuid
 from contextlib import asynccontextmanager
 
 import argon2
-
-# from db import add_session, add_user, close_pool, create_pool, get_user_by_nameim
-import db
 from asyncpg import Connection, Pool
 from fastapi import Depends, FastAPI, HTTPException
+
+from . import db
 
 app = FastAPI()
 
