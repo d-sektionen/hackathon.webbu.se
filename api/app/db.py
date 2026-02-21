@@ -7,11 +7,22 @@ import asyncpg
 from asyncpg import Connection, Pool
 from fastapi import FastAPI
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-
 
 async def create_pool(app: FastAPI):
-    app.state.pool = await asyncpg.create_pool(DATABASE_URL, min_size=1, max_size=10)
+    database_user = os.getenv("DATABASE_USER")
+    if database_user is None:
+        raise Exception("DATABASE_USER environment variable is not set")
+
+    database_name = os.getenv("DATABASE_NAME")
+    if database_name is None:
+        raise Exception("DATABASE_NAME environment variable is not set")
+
+    database_password = os.getenv("DATABASE_PASSWORD")
+    if database_password is None:
+        raise Exception("DATABASE_PASSWORD environment variable is not set")
+
+    database_url = f"postgresql://{database_user}:{database_password}@postgres:5432/{database_name}"
+    app.state.pool = await asyncpg.create_pool(database_url, min_size=1, max_size=10)
 
 
 async def close_pool(app: FastAPI):
@@ -29,6 +40,15 @@ class User(NamedTuple):
 class Session(NamedTuple):
     user_id: UUID
     token: UUID
+    created_at: datetime
+
+
+class Project(NamedTuple):
+    id: UUID
+    name: str
+    description: str
+    github_url: str
+    owner_user_id: UUID
     created_at: datetime
 
 
@@ -55,9 +75,30 @@ async def add_session(user_id: UUID, db: Connection) -> Session:
 
     return session
 
-
 async def get_session_by_token(token: UUID, db: Connection) -> Session | None:
     session: Session | None = await db.fetchrow(
         "SELECT * FROM sessions WHERE token = $1", token
     )
     return session
+
+async def add_project(name: str, description: str, github_url: str | None, owner_user_id: UUID, db: Connection) -> Project:
+    project: Project | None = await db.fetchrow(
+        "INSERT INTO projects (name, description, github_url, owner_user_id) VALUES ($1, $2, $3, $4) RETURNING *",
+        name,
+        description,
+        github_url,
+        owner_user_id,
+    )
+    if project is None:
+        raise Exception("Failed to create project")
+    return project
+
+async def get_all_projects(db: Connection) -> list[Project]:
+    projects = await db.fetch("SELECT * FROM projects")
+    return [Project(**project) for project in projects]
+
+async def get_project_by_id(project_id: UUID, db: Connection) -> Project | None:
+    project: Project | None = await db.fetchrow("SELECT * FROM projects WHERE id = $1", project_id)
+    if project is None:
+        return None
+    return project

@@ -3,11 +3,9 @@ from contextlib import asynccontextmanager
 
 import argon2
 from asyncpg import Connection
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Cookie, Depends, FastAPI, HTTPException
 
 from . import db
-
-app = FastAPI()
 
 
 @asynccontextmanager
@@ -17,6 +15,9 @@ async def lifespan(app: FastAPI):
     yield
     # Shutdown
     await db.close_pool(app)
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 # Dependency to get DB connection
@@ -57,3 +58,33 @@ async def signup(name: str, password: str, conn: Connection = Depends(get_db)):
     session = await db.add_session(user.id, conn)
 
     return {"status": "success", "token": session.token}
+
+@app.post("/projects")
+async def create_project(
+    name: str,
+    description: str,
+    github_url: str,
+    token: str | None = Cookie(default=None),
+    conn: Connection = Depends(get_db)
+):
+    if token is None:
+        raise HTTPException(status_code=401, detail="Missing token")
+
+    session = await verify_token(token, conn)
+    project = await db.add_project(name, description, github_url, session.user_id, conn)
+
+    return {"status": "success", "project": project}
+
+@app.get("/projects")
+async def list_projects(conn: Connection = Depends(get_db)):
+    projects = await db.get_all_projects(conn)
+    return {"status": "success", "projects": projects}
+
+@app.get("/projects/{project_id}")
+async def get_project(project_id: uuid.UUID, conn: Connection = Depends(get_db)):
+    project = await db.get_project_by_id(project_id, conn)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+    return {"status": "success", "project": project}
+
+# @app.get("/projects/{project_id}/readme")
