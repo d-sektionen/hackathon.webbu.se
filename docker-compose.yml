@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: hackathon
+      POSTGRES_DB: hackathon
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - internal
+    restart: unless-stopped
+
+  nextjs:
+    image: registry.d-sektionen.se/hackathon.webbu.se:production
+    ports:
+      - "127.0.0.1:8416:3000"
+    environment:
+      BASE_URL: https://hackathon.webbu.se
+      API_BASE_URL: https://hackathon.webbu.se/api
+    networks:
+      - internal
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  api:
+    image: registry.d-sektionen.se/hackathon.webbu.se_api:production
+    ports:
+      - "127.0.0.1:8417:3000"
+    networks:
+      - internal
+    restart: unless-stopped
+
+networks:
+  internal:
+
+volumes:
+  postgres_data:

@@ -1,0 +1,36 @@
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+    volumes:
+      - ".dev/db/dumps:/dumps"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+
+  nextjs:
+    image: ""
+    build:
+      context: nextjs
+      dockerfile: Dockerfile.development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nextjs/app:/app/app
+      - ./nextjs/public:/app/public
+    environment:
+      BASE_URL: http://localhost:3000
+      API_BASE_URL: http://localhost:3001
+    restart: unless-stopped
+
+  api:
+    image: ""
+    build:
+      context: api
+      dockerfile: Dockerfile.development
+    volumes:
+      - ./api/src:/app/src
+    ports:
+      - "3001:3000"
+    restart: unless-stopped

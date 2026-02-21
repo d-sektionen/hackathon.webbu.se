@@ -1,0 +1,8 @@
+[tools]
+node = "25"
+python = "3.14"
+uv = "0.10"
+dbmate = "2.31"
+
+[env]
+_.python.venv = { path = ".venv", create = true }

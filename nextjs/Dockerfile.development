@@ -1,0 +1,14 @@
+FROM node:25-alpine
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY next.config.ts package.json tsconfig.json /app/
+RUN npm i
+
+ENV NODE_ENV development
+ENV NEXT_TELEMETRY_DISABLED 1
+
+EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["npm", "run", "dev"]
