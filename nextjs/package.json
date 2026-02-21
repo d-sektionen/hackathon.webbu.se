@@ -7,12 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "pollen": "pollen -o app/pollen.css"
   },
   "dependencies": {
     "next": "16.1.6",
+    "pollen-css": "^5.0.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "unocss": "^66.6.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
