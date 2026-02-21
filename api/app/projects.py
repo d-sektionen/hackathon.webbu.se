@@ -9,8 +9,7 @@ from .deps import get_current_session, get_db
 
 router = APIRouter()
 
-
-class CreateProject(BaseModel):
+class Project(BaseModel):
     name: str
     description: str
     github_url: str | None = None
@@ -18,7 +17,7 @@ class CreateProject(BaseModel):
 
 @router.post("/projects")
 async def create_project(
-    project_data: CreateProject,
+    project_data: Project,
     session=Depends(get_current_session),
     conn: Connection = Depends(get_db),
 ):
@@ -58,7 +57,7 @@ async def get_project(project_id: uuid.UUID, conn: Connection = Depends(get_db))
 @router.put("/projects/{project_id}")
 async def update_project(
     project_id: uuid.UUID,
-    project_data: CreateProject,
+    project_data: Project,
     session=Depends(get_current_session),
     conn: Connection = Depends(get_db),
 ):
