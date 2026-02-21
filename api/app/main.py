@@ -2,7 +2,7 @@ import uuid
 from contextlib import asynccontextmanager
 
 import argon2
-from asyncpg import Connection, Pool
+from asyncpg import Connection
 from fastapi import Depends, FastAPI, HTTPException
 
 from . import db
