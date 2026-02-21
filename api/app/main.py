@@ -10,6 +10,7 @@ from fastapi import Depends, FastAPI, HTTPException
 
 app = FastAPI()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
@@ -17,6 +18,7 @@ async def lifespan(app: FastAPI):
     yield
     # Shutdown
     await db.close_pool(app)
+
 
 # Dependency to get DB connection
 async def get_db():
@@ -37,6 +39,7 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
+
 
 @app.post("/login")
 async def login(name: str, password: str, conn: Connection = Depends(get_db)):
@@ -64,7 +67,4 @@ async def signup(name: str, password: str, conn: Connection = Depends(get_db)):
     user = await db.add_user(name, hashed_password, conn)
     session = await db.add_session(user.id, conn)
 
-    return {
-        "status": "success",
-        "token": session.token
-    }
+    return {"status": "success", "token": session.token}
