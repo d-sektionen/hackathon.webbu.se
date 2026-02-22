@@ -35,6 +35,10 @@ export async function apiFetch<T = undefined, K = undefined>(
   const res = await fetch(url, {
     ...options,
     body: JSON.stringify(options?.body),
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
 
   if (!res.ok) {
