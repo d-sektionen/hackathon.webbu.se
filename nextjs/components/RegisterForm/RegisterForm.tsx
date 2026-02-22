@@ -2,46 +2,50 @@
 "use client";
 
 import { Formik, type FormikHelpers } from "formik";
+import { useState } from "react";
 import { boolean, type InferType, object, string } from "yup";
-import type { User } from "@/lib/api";
-import { TextField } from "../TextField/TextField";
-import style from "./RegisterForm.module.css";
+import { apiFetch, type User } from "@/lib/api";
 import { Button } from "../Button/Button";
 import { Form } from "../Form/Form";
+import { TextField } from "../TextField/TextField";
+import style from "./RegisterForm.module.css";
+import { redirect } from "next/navigation";
 
 const registerFormSchema = object({
-  firstName: string().required(),
-  lastNames: string().required(),
   email: string().email().required(),
-  hasLiuId: boolean(),
-  liuId: string()
-    .matches(/[a-z]{5}[0-9]{3}/)
-    .when("hasLiuId", { is: true, then: (s) => s.required() }),
+  password: string().min(8).required(),
 });
 
 type RegisterFormSchema = InferType<typeof registerFormSchema>;
 
 type RegisterFormProps = {
-  onRegister?: (user: User) => void;
+  onRegister?: () => void;
 };
 
 export function RegisterForm({ onRegister }: RegisterFormProps) {
-  function handleSubmit(
-    _values: RegisterFormSchema,
+  const [error, setError] = useState<string>();
+
+  async function handleSubmit(
+    values: RegisterFormSchema,
     { setSubmitting }: FormikHelpers<RegisterFormSchema>,
   ) {
-    setSubmitting(true);
-    // do something with values
+    const { error } = await apiFetch<User, RegisterFormSchema>(
+      "/signup",
+      undefined,
+      { method: "POST", body: values },
+    );
     setSubmitting(false);
-    onRegister?.({});
+
+    if (error) {
+      setError(error);
+    } else {
+      redirect("/dashboard");
+    }
   }
 
   const initialValues: RegisterFormSchema = {
-    firstName: "",
-    lastNames: "",
     email: "",
-    hasLiuId: false,
-    liuId: undefined,
+    password: "",
   };
 
   return (
@@ -50,17 +54,28 @@ export function RegisterForm({ onRegister }: RegisterFormProps) {
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
-      <Form className={style.registerForm}>
-        <TextField cols={3} label="First Name" name="firstName" />
-        <TextField cols={3} label="Last Name(s)" name="lastNames" />
-        <TextField cols={6} label="E-mail" name="email" />
-
-        <div className={style.buttons}>
-          <Button type="submit" key={0} variant="primary">
-            Submit
-          </Button>
+      {({ isSubmitting, submitForm }) => (
+        <div className={style.registerForm}>
+          <h1>Register for an account</h1>
+          <Form submitting={isSubmitting} error={error}>
+            <TextField cols={6} label="E-mail" type="email" name="email" />
+            <TextField
+              cols={6}
+              label="Password"
+              type="password"
+              name="password"
+            />
+          </Form>
+          <div className={style.buttons}>
+            <Button href="/signin" variant="secondary">
+              Already have an account?
+            </Button>
+            <Button onClick={submitForm} type="submit" variant="primary">
+              Sign up
+            </Button>
+          </div>
         </div>
-      </Form>
+      )}
     </Formik>
   );
 }

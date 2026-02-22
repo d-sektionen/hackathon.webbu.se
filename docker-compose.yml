@@ -16,8 +16,8 @@ services:
     ports:
       - "127.0.0.1:8416:3000"
     environment:
-      BASE_URL: https://hackathon.webbu.se
-      API_BASE_URL: https://hackathon.webbu.se/api
+      NEXT_PUBLIC_BASE_URL: https://hackathon.webbu.se
+      NEXT_PUBLIC_API_BASE_URL: https://hackathon.webbu.se/api
     networks:
       - internal
     depends_on:
@@ -28,6 +28,8 @@ services:
     image: registry.d-sektionen.se/hackathon.webbu.se_api:production
     ports:
       - "127.0.0.1:8417:3000"
+    environment:
+      CORS_ALLOWED_ORIGIN: https://hackathon.webbu.se
     networks:
       - internal
     restart: unless-stopped

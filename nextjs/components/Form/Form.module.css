@@ -7,9 +7,30 @@
   }
 }
 
-.buttons {
+.error {
+  padding-left: var(--size-2);
   display: flex;
-  justify-content: flex-end;
-  gap: var(--size-4);
-  margin-top: var(--size-4);
+  width: max-content;
+  align-items: center;
+  font: var(--font-body-sm);
+  gap: var(--size-1);
+  color: var(--color-rose);
+  border-left: var(--size-1) solid var(--color-rose);
+
+  & p {
+    margin-bottom: var(--size-1);
+  }
+}
+
+.submitting {
+  animation: submitting 1s linear infinite;
+}
+
+@keyframes submitting {
+  from {
+    opacity: 60%;
+  }
+  to {
+    opacity: 40%;
+  }
 }
