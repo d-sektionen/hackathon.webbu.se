@@ -5,7 +5,7 @@
   cursor: pointer;
   font: var(--font-button);
   padding: var(--size-2) var(--size-3);
-  text-align: center;
+  text-align: left;
 
   &.hasIcon {
     padding: var(--size-2);
