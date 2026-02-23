@@ -54,7 +54,7 @@ export function SignupForm(_: SignupFormProps) {
     >
       {({ isSubmitting, submitForm }) => (
         <div className={style.signupForm}>
-          <h1>Register for an account</h1>
+          <h1>Sign up for an account</h1>
           <Form submitting={isSubmitting} error={error}>
             <TextField cols={6} label="E-mail" type="email" name="email" />
             <TextField
