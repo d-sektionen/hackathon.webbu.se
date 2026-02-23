@@ -1,4 +1,4 @@
-.registerForm {
+.signupForm {
   & form {
     display: grid;
     padding: var(--size-4);
@@ -11,8 +11,12 @@
 
   & h1 {
     font: var(--font-heading-lg);
-    padding: var(--size-4);
     position: relative;
+    padding: var(--size-4);
+
+    @media (max-width: 480px) {
+      text-align: center;
+    }
   }
 }
 
@@ -21,4 +25,8 @@
   justify-content: flex-end;
   gap: var(--size-4);
   margin: var(--size-4) 0;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 }

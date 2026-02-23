@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar/Navbar";
 
@@ -37,8 +37,8 @@ export default function RootLayout({
       >
         <Navbar
           links={[
-            { label: "Register", href: "/register" },
-            { label: "Sign in", href: "/signin" },
+            { label: "Sign up", href: "/signup" },
+            { label: "Log in", href: "/login" },
           ]}
         />
         {children}

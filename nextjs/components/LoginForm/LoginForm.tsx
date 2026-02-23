@@ -2,33 +2,33 @@
 "use client";
 
 import { Formik, type FormikHelpers } from "formik";
+import { redirect } from "next/navigation";
 import { useState } from "react";
-import { boolean, type InferType, object, string } from "yup";
+import { type InferType, object, string } from "yup";
 import { apiFetch, type User } from "@/lib/api";
 import { Button } from "../Button/Button";
 import { Form } from "../Form/Form";
 import { TextField } from "../TextField/TextField";
-import style from "./RegisterForm.module.css";
-import { redirect } from "next/navigation";
+import style from "./LoginForm.module.css";
 
-const registerFormSchema = object({
+const loginFormSchema = object({
   email: string().email().required(),
   password: string().min(8).required(),
 });
 
-type RegisterFormSchema = InferType<typeof registerFormSchema>;
+type LoginFormSchema = InferType<typeof loginFormSchema>;
 
-type RegisterFormProps = {};
+type LoginFormProps = {};
 
-export function RegisterForm(_: RegisterFormProps) {
+export function LoginForm(_: LoginFormProps) {
   const [error, setError] = useState<string>();
 
   async function handleSubmit(
-    values: RegisterFormSchema,
-    { setSubmitting }: FormikHelpers<RegisterFormSchema>,
+    values: LoginFormSchema,
+    { setSubmitting }: FormikHelpers<LoginFormSchema>,
   ) {
-    const { error } = await apiFetch<User, RegisterFormSchema>(
-      "/signup",
+    const { error } = await apiFetch<User, LoginFormSchema>(
+      "/login",
       undefined,
       { method: "POST", body: values },
     );
@@ -41,20 +41,20 @@ export function RegisterForm(_: RegisterFormProps) {
     }
   }
 
-  const initialValues: RegisterFormSchema = {
+  const initialValues: LoginFormSchema = {
     email: "",
     password: "",
   };
 
   return (
     <Formik
-      validationSchema={registerFormSchema}
+      validationSchema={loginFormSchema}
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, submitForm }) => (
-        <div className={style.registerForm}>
-          <h1>Register for an account</h1>
+        <div className={style.loginForm}>
+          <h1>Log in to your account</h1>
           <Form submitting={isSubmitting} error={error}>
             <TextField cols={6} label="E-mail" type="email" name="email" />
             <TextField
@@ -65,11 +65,11 @@ export function RegisterForm(_: RegisterFormProps) {
             />
           </Form>
           <div className={style.buttons}>
-            <Button href="/signin" variant="secondary">
-              Already have an account?
+            <Button href="/signup" variant="secondary">
+              Don't have an account?
             </Button>
             <Button onClick={submitForm} type="submit" variant="primary">
-              Sign up
+              Login
             </Button>
           </div>
         </div>
