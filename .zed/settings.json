@@ -6,9 +6,17 @@
     },
     "TypeScript": {
       "use_on_type_format": false, // https://github.com/zed-industries/zed/issues/43752#issuecomment-3644437401
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
+      },
     },
     "TSX": {
       "use_on_type_format": false, // https://github.com/zed-industries/zed/issues/43752#issuecomment-3644437401
+      "code_actions_on_format": {
+        "source.fixAll.biome": true,
+        "source.organizeImports.biome": true,
+      },
     },
   },
   "tab_size": 2,

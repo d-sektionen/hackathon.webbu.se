@@ -71,6 +71,12 @@ async def get_user_by_email(email: str, db: Connection) -> User | None:
         return None
     return User(**dict(user))
 
+async def get_user_by_id(id: UUID, db: Connection) -> User | None:
+    user: Record | None = await db.fetchrow("SELECT * FROM users WHERE id = $1", id)
+    
+    if user is None:
+       return None
+    return User(**dict(user)) 
 
 async def add_session(user_id: UUID, db: Connection) -> Session:
     session: Record | None = await db.fetchrow(

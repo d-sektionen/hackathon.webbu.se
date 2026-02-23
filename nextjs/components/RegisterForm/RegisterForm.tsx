@@ -18,11 +18,9 @@ const registerFormSchema = object({
 
 type RegisterFormSchema = InferType<typeof registerFormSchema>;
 
-type RegisterFormProps = {
-  onRegister?: () => void;
-};
+type RegisterFormProps = {};
 
-export function RegisterForm({ onRegister }: RegisterFormProps) {
+export function RegisterForm(_: RegisterFormProps) {
   const [error, setError] = useState<string>();
 
   async function handleSubmit(
