@@ -15,6 +15,8 @@ export function Navbar({ links = [] }: NavbarProps) {
       <div className={style.navbar}>
         <Button variant="link" href="/">
           <Image
+            preload
+            loading="eager"
             className={style.logo}
             width={90}
             height={20}
