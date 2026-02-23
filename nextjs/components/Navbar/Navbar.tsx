@@ -13,15 +13,15 @@ export function Navbar({ links = [] }: NavbarProps) {
   return (
     <div className={clsx(style.navbarContainer, "container")}>
       <div className={style.navbar}>
-        <Link href="/">
+        <Button variant="link" href="/">
           <Image
             className={style.logo}
-            width={130}
-            height={40}
+            width={90}
+            height={20}
             src="logo.svg"
             alt=""
           />
-        </Link>
+        </Button>
         <Button
           className={style.menuButton}
           popoverTarget="menu"
