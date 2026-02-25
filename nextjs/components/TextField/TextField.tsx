@@ -33,6 +33,9 @@ export function TextField({
           >
             {label ? <p className={style.label}>{label}</p> : null}
             <input {...field} {...rest} />
+            {wasTouched && hasErrors ? (
+              <p className={style.error}>{String(errors[field.name])}</p>
+            ) : null}
           </div>
         );
       }}

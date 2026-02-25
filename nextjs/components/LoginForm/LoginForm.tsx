@@ -13,7 +13,7 @@ import style from "./LoginForm.module.css";
 
 const loginFormSchema = object({
   email: string().email().required(),
-  password: string().min(8).required(),
+  password: string().required(),
 });
 
 type LoginFormSchema = InferType<typeof loginFormSchema>;

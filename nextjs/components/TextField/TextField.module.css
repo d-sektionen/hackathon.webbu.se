@@ -28,8 +28,13 @@
   }
 }
 
-.label {
+.label,
+.error {
   font: var(--font-body-sm);
   font-family: var(--font-mono);
   margin: var(--size-1);
+}
+
+.error {
+  color: var(--color-rose);
 }

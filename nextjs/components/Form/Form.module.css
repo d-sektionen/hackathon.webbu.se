@@ -22,13 +22,16 @@
   }
 }
 
-.submitting {
-  animation: submitting 1s linear infinite;
+.submitting > * {
+  animation: submitting 2s linear infinite;
 }
 
 @keyframes submitting {
   from {
-    opacity: 60%;
+    opacity: 40%;
+  }
+  50% {
+    opacity: 20%;
   }
   to {
     opacity: 40%;
