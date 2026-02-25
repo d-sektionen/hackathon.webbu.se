@@ -23,7 +23,7 @@
 			color: var(--color-rose-500);
 		}
 		& input {
-			border: solid var(--color-rose-600);
+			border: solid 2px var(--color-rose-600);
 		}
 	}
 }
@@ -36,5 +36,5 @@
 }
 
 .error {
-	color: var(--color-rose);
+	color: var(--color-rose-500);
 }

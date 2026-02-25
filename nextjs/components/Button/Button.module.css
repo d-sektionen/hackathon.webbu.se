@@ -10,34 +10,34 @@
 	cursor: pointer;
 	font: var(--font-body-sm);
 	font-family: var(--font-mono);
-	padding: var(--size-2) var(--size-3);
+	padding: var(--size-3) var(--size-4);
 	text-align: left;
 
 	&.hasIcon {
-		padding: var(--size-2);
-	}
-
-	&.hasText {
 		padding: var(--size-3);
 	}
 
+	&.hasIcon.hasText {
+		padding: var(--size-3) var(--size-4);
+	}
+
 	&:global(.variant-primary) {
-		background-color: var(--color-teal-300);
+		background-color: var(--color-teal-400);
 		color: var(--color-teal-950);
 
 		&:hover,
 		&:focus {
-			background-color: var(--color-teal-200);
+			background-color: var(--color-teal-300);
 		}
 	}
 
 	&:global(.variant-secondary) {
-		--color-white-opacity: 10%;
+		--color-white-opacity: 6%;
 		background-color: var(--color-white);
 
 		&:hover,
 		&:focus {
-			--color-white-opacity: 20%;
+			--color-white-opacity: 12%;
 		}
 	}
 
@@ -47,7 +47,7 @@
 
 		&:hover,
 		&:focus {
-			--color-white-opacity: 10%;
+			--color-white-opacity: 6%;
 		}
 	}
 }
