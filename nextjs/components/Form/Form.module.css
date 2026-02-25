@@ -1,39 +1,39 @@
 .form {
-  display: grid;
-  grid-template-columns: var(--grid-6);
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
 
-  & > * {
-    grid-column: auto / span var(--cols, 6);
-  }
+	& > * {
+		grid-column: auto / span var(--cols, 6);
+	}
 }
 
 .error {
-  padding-left: var(--size-2);
-  display: flex;
-  width: max-content;
-  align-items: center;
-  font: var(--font-body-sm);
-  gap: var(--size-1);
-  color: var(--color-rose);
-  border-left: var(--size-1) solid var(--color-rose);
+	padding-left: var(--size-2);
+	display: flex;
+	width: max-content;
+	align-items: center;
+	font: var(--font-body-sm);
+	gap: var(--size-1);
+	color: var(--color-rose-500);
+	border-left: var(--size-1) solid var(--color-rose-500);
 
-  & p {
-    margin-bottom: var(--size-1);
-  }
+	& p {
+		margin-bottom: var(--size-1);
+	}
 }
 
 .submitting > * {
-  animation: submitting 2s linear infinite;
+	animation: submitting 2s linear infinite;
 }
 
 @keyframes submitting {
-  from {
-    opacity: 40%;
-  }
-  50% {
-    opacity: 20%;
-  }
-  to {
-    opacity: 40%;
-  }
+	from {
+		opacity: 40%;
+	}
+	50% {
+		opacity: 20%;
+	}
+	to {
+		opacity: 40%;
+	}
 }

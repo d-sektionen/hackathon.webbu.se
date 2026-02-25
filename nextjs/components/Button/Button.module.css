@@ -1,45 +1,53 @@
 /** biome-ignore-all lint/correctness/noUnknownPseudoClass: <explanation> */
+:root {
+	--color-white-opacity: var(--color-opacity, 100%);
+	--color-white: rgb(255 255 255 / var(--color-white-opacity));
+}
+
 .button {
-  display: block;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font: var(--font-button);
-  padding: var(--size-2) var(--size-3);
-  text-align: left;
+	display: block;
+	border-radius: var(--rounded-sm);
+	cursor: pointer;
+	font: var(--font-body-sm);
+	font-family: var(--font-mono);
+	padding: var(--size-2) var(--size-3);
+	text-align: left;
 
-  &.hasIcon {
-    padding: var(--size-2);
-  }
+	&.hasIcon {
+		padding: var(--size-2);
+	}
 
-  &.hasText {
-    padding: var(--size-3);
-  }
+	&.hasText {
+		padding: var(--size-3);
+	}
 
-  &:global(.variant-primary) {
-    background-color: var(--color-teal-300);
-    color: var(--color-teal-900);
+	&:global(.variant-primary) {
+		background-color: var(--color-teal-300);
+		color: var(--color-teal-950);
 
-    &:hover,
-    &:focus {
-      background-color: var(--color-teal-300);
-    }
-  }
+		&:hover,
+		&:focus {
+			background-color: var(--color-teal-200);
+		}
+	}
 
-  &:global(.variant-secondary) {
-    background-color: var(--lighten-10);
+	&:global(.variant-secondary) {
+		--color-white-opacity: 10%;
+		background-color: var(--color-white);
 
-    &:hover,
-    &:focus {
-      background-color: var(--lighten-20);
-    }
-  }
+		&:hover,
+		&:focus {
+			--color-white-opacity: 20%;
+		}
+	}
 
-  &:global(.variant-link) {
-    background-color: transparent;
+	&:global(.variant-link) {
+		--color-white-opacity: 0%;
+		background-color: var(--color-white);
 
-    &:hover,
-    &:focus {
-      background-color: rgb(255 255 255 / 10%);
-    }
-  }
+		&:hover,
+		&:focus {
+			--color-white-opacity: 10%;
+		}
+	}
 }

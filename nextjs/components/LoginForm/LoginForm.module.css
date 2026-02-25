@@ -1,32 +1,32 @@
 .loginForm {
-  & form {
-    display: grid;
-    padding: var(--size-4);
-    padding-bottom: var(--size-8);
-    border-radius: var(--radius-md);
-    background-color: var(--color-teal-950);
-    grid-template-columns: var(--grid-6);
-    gap: var(--size-2) var(--size-4);
-  }
+	& form {
+		display: grid;
+		padding: var(--size-4);
+		padding-bottom: var(--size-8);
+		border-radius: var(--rounded-md);
+		background-color: var(--color-teal-950);
+		grid-template-columns: repeat(6, 1fr);
+		gap: var(--size-2) var(--size-4);
+	}
 
-  & h1 {
-    font: var(--font-heading-lg);
-    position: relative;
-    padding: var(--size-4);
+	& h1 {
+		font: var(--font-heading-lg);
+		position: relative;
+		padding: var(--size-4);
 
-    @media (max-width: 480px) {
-      text-align: center;
-    }
-  }
+		@media (max-width: 480px) {
+			text-align: center;
+		}
+	}
 }
 
 .buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--size-4);
-  margin: var(--size-4) 0;
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--size-4);
+	margin: var(--size-4) 0;
 
-  @media (max-width: 480px) {
-    flex-direction: column;
-  }
+	@media (max-width: 480px) {
+		flex-direction: column;
+	}
 }

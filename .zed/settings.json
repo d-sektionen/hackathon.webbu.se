@@ -19,5 +19,14 @@
       },
     },
   },
+  "lsp": {
+    "css-variables": {
+      "settings": {
+        "cssVariables": {
+          "lookupFiles": ["**/*.css", "nextjs/node_modules/tailvars/index.css"],
+        },
+      },
+    },
+  },
   "tab_size": 2,
 }
