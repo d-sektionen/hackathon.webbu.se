@@ -27,8 +27,9 @@ class AuthResponse(BaseModel):
 
 
 class MeResponse(BaseModel):
-    session: db.Session
-    user: db.User
+    id: UUID
+    email: str
+    is_admin: bool
 
 
 @router.post("/login")
@@ -118,4 +119,4 @@ async def me(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="not logged in"
         )
 
-    return MeResponse(session=session, user=user)
+    return MeResponse(**user.__dict__)

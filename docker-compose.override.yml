@@ -13,6 +13,7 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    restart: no
 
   nextjs:
     image: ""
@@ -29,8 +30,8 @@ services:
     env_file: .env
     environment:
       NEXT_PUBLIC_BASE_URL: http://localhost:3000
-      NEXT_PUBLIC_API_BASE_URL: http://api:3001
-    restart: unless-stopped
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3001
+    restart: no
 
   api:
     image: ""
@@ -44,4 +45,4 @@ services:
     environment:
       CORS_ALLOWED_ORIGIN: http://localhost:3000
     env_file: .env
-    restart: unless-stopped
+    restart: no

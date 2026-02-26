@@ -23,17 +23,5 @@
 }
 
 .submitting > * {
-	animation: submitting 2s linear infinite;
-}
-
-@keyframes submitting {
-	from {
-		opacity: 40%;
-	}
-	50% {
-		opacity: 20%;
-	}
-	to {
-		opacity: 40%;
-	}
+	animation: 2s var(--animation-loading);
 }

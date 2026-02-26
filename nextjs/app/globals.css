@@ -4,6 +4,8 @@
 :root {
 	--font-sans: "sans-serif";
 	--font-serif: "serif";
+
+	--animation-loading: loading linear infinite;
 }
 
 /* Globals */
@@ -32,4 +34,16 @@ body {
 	padding: 0 var(--size-4);
 	width: 100%;
 	max-width: var(--screen-width-md);
+}
+
+@keyframes loading {
+	from {
+		opacity: 40%;
+	}
+	50% {
+		opacity: 20%;
+	}
+	to {
+		opacity: 40%;
+	}
 }
