@@ -78,7 +78,7 @@
   code:not(pre > code) {
     background-color: var(--color-neutral-800);
     padding: 0 var(--size-1);
-    border-radius: var(--rounded-sm);
+    border-radius: var(--rounded-xs);
   }
 
   /* code blocks */
