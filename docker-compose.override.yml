@@ -31,6 +31,7 @@ services:
     environment:
       NEXT_PUBLIC_BASE_URL: http://localhost:3000
       NEXT_PUBLIC_API_BASE_URL: http://localhost:3001
+      INTERNAL_API_BASE_URL: http://localhost:3001
     restart: no
 
   api:

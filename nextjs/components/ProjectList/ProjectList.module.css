@@ -1,0 +1,35 @@
+.pageTitle {
+  font: var(--font-heading-lg);
+  position: relative;
+  padding: var(--size-4);
+
+  @media (max-width: 480px) {
+    text-align: center;
+  }
+}
+
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-4);
+}
+
+.project {
+  background-color: var(--color-teal-950);
+  padding: var(--size-4);
+  border-radius: var(--rounded-md);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    padding-left: var(--size-1);
+    padding-bottom: var(--size-1);
+    font-size: var(--font-size-lg);
+    color: var(--color-teal-200);
+  }
+  p {
+    color: var(--color-teal-100);
+  }
+}

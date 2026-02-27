@@ -93,7 +93,6 @@ async def update_project(
 
 @router.get(
     "/projects/{project_id}/readme",
-    response_class=PlainTextResponse,
 )
 async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(get_db)):
     """Fetch the project README via the GitHub API.
@@ -122,4 +121,7 @@ async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(ge
 
     readme_content = await utils.fetch_github_readme(project.github_url)
 
-    return PlainTextResponse(content=readme_content)
+    return {
+        "status": "sucess",
+        "content": readme_content
+    }
