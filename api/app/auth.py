@@ -19,7 +19,7 @@ class LoginRequest(BaseModel):
 
 class SignupRequest(BaseModel):
     email: EmailStr
-    password: Annotated[str, StringConstraints(min_length=8, max_length=128)]
+    password: Annotated[str, StringConstraints(min_length=8, max_length=255)]
 
 
 class AuthResponse(BaseModel):
