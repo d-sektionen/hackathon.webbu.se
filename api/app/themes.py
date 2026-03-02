@@ -1,8 +1,9 @@
+from typing import Annotated
 from uuid import UUID
 
 from asyncpg import Connection
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 
 from .db import schema, themes
 from .deps import get_current_session, get_db
@@ -10,7 +11,7 @@ from .deps import get_current_session, get_db
 router = APIRouter()
 
 class ThemeRequest(BaseModel):
-    name: str
+    name: Annotated[str, StringConstraints(min_length=2)]
 
 class ThemeListResponse(BaseModel):
     themes: list[schema.Theme]
@@ -37,11 +38,6 @@ async def suggest_theme(
     session: schema.Session = Depends(get_current_session),
     conn: Connection = Depends(get_db),
 ) -> ThemeResponse:
-    if len(theme_data.name) < 2:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="the name of the theme must at least be 2 characters long"
-        )
-
     theme = await themes.add(theme_data.name, session.user_id, conn)
     return ThemeResponse(theme=theme)
 
