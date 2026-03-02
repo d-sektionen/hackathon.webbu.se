@@ -2,10 +2,10 @@ import uuid
 
 from asyncpg import Connection
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
-from . import db, utils
+from . import utils
+from .db import projects
 from .deps import get_current_session, get_db
 
 router = APIRouter()
@@ -29,7 +29,7 @@ async def create_project(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid GitHub URL"
         )
 
-    project = await db.add_project(
+    project = await projects.add(
         project_data.name,
         project_data.description,
         project_data.github_url,
@@ -41,13 +41,13 @@ async def create_project(
 
 @router.get("/projects")
 async def list_projects(conn: Connection = Depends(get_db)):
-    projects = await db.get_all_projects(conn)
-    return {"status": "success", "projects": projects}
+    project_list = await projects.get_all(conn)
+    return {"status": "success", "projects": project_list}
 
 
 @router.get("/projects/{project_id}")
 async def get_project(project_id: uuid.UUID, conn: Connection = Depends(get_db)):
-    project = await db.get_project_by_id(project_id, conn)
+    project = await projects.get_by_id(project_id, conn)
     if project is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Project not found"
@@ -62,7 +62,7 @@ async def update_project(
     session=Depends(get_current_session),
     conn: Connection = Depends(get_db),
 ):
-    project = await db.get_project_by_id(project_id, conn)
+    project = await projects.get_by_id(project_id, conn)
     if project is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Project not found"
@@ -80,7 +80,7 @@ async def update_project(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid GitHub URL"
         )
 
-    updated_project = await db.update_project(
+    updated_project = await projects.update(
         project_id,
         project_data.name,
         project_data.description,
@@ -108,7 +108,7 @@ async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(ge
         HTTPException: 404 if the project is not found.
         HTTPException: 500 on GitHub fetch or decode errors.
     """
-    project = await db.get_project_by_id(project_id, conn)
+    project = await projects.get_by_id(project_id, conn)
     if project is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Project not found"

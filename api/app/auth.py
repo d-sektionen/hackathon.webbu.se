@@ -6,7 +6,7 @@ from asyncpg import Connection
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 
-from . import db
+from .db import schema, sessions, users
 from .deps import get_db
 
 router = APIRouter()
@@ -41,7 +41,7 @@ async def login(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Missing email or password"
         )
 
-    user = await db.get_user_by_email(login.email, conn)
+    user = await users.get_by_email(login.email, conn)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -57,7 +57,7 @@ async def login(
             detail="Incorrect email or password",
         )
 
-    session = await db.add_session(user.id, conn)
+    session = await sessions.add(user.id, conn)
 
     response.set_cookie(
         key="token", value=str(session.token), httponly=True, samesite="lax"
@@ -76,7 +76,7 @@ async def signup(
             detail="Password must be at least 8 characters long",
         )
 
-    previous_user = await db.get_user_by_email(signup_data.email, conn)
+    previous_user = await users.get_by_email(signup_data.email, conn)
     if previous_user is not None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="email already in use"
@@ -85,8 +85,8 @@ async def signup(
     ph = argon2.PasswordHasher()
     hashed_password = ph.hash(signup_data.password)
 
-    user = await db.add_user(signup_data.email, hashed_password, conn)
-    session = await db.add_session(user.id, conn)
+    user = await users.add(signup_data.email, hashed_password, conn)
+    session = await sessions.add(user.id, conn)
 
     response.set_cookie(
         key="token", value=str(session.token), httponly=True, samesite="lax"
@@ -106,13 +106,13 @@ async def me(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="not logged in"
         )
 
-    session = await db.get_session_by_token(token, conn)
+    session = await sessions.get_by_token(token, conn)
     if session is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="not logged in"
         )
 
-    user = await db.get_user_by_id(session.user_id, conn)
+    user = await users.get_by_id(session.user_id, conn)
     if user is None:
         response.delete_cookie("token")  # Properly remove invalid session from client
         raise HTTPException(
