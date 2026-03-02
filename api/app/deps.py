@@ -1,4 +1,5 @@
 import uuid
+from collections.abc import AsyncGenerator
 
 from asyncpg import Connection
 from fastapi import Cookie, Depends, HTTPException, Request, status
@@ -6,7 +7,7 @@ from fastapi import Cookie, Depends, HTTPException, Request, status
 from .db import schema, sessions
 
 
-async def get_db(request: Request):
+async def get_db(request: Request) -> AsyncGenerator[Connection, None]:
     async with request.app.state.pool.acquire() as connection:
         yield connection
 

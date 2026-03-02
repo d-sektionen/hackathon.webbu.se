@@ -10,7 +10,7 @@ class GitHubRepo:
     repo: str
 
 
-def match_github_url(url) -> GitHubRepo:
+def match_github_url(url: str) -> GitHubRepo:
     """
     Matches https and http github urls
     Raises:

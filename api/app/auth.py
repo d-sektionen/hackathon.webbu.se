@@ -12,12 +12,12 @@ from .deps import get_db
 router = APIRouter()
 
 
-class Login(BaseModel):
+class LoginRequest(BaseModel):
     email: str
     password: str
 
 
-class Signup(BaseModel):
+class SignupRequest(BaseModel):
     email: str
     password: str
 
@@ -34,7 +34,7 @@ class MeResponse(BaseModel):
 
 @router.post("/login")
 async def login(
-    response: Response, login: Login | None = None, conn: Connection = Depends(get_db)
+    response: Response, login: LoginRequest | None = None, conn: Connection = Depends(get_db)
 ) -> AuthResponse:
     if login is None:
         raise HTTPException(
@@ -68,7 +68,7 @@ async def login(
 
 @router.post("/signup")
 async def signup(
-    signup_data: Signup, response: Response, conn: Connection = Depends(get_db)
+    signup_data: SignupRequest, response: Response, conn: Connection = Depends(get_db)
 ) -> AuthResponse:
     if len(signup_data.password) < 8:
         raise HTTPException(
@@ -100,7 +100,7 @@ async def me(
     response: Response,
     token: Annotated[UUID | None, Cookie()],
     conn: Connection = Depends(get_db),
-):
+) -> MeResponse:
     if token is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="not logged in"
