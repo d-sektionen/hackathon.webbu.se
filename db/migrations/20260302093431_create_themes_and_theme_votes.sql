@@ -1,9 +1,12 @@
 -- migrate:up
 CREATE TABLE themes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  creator_id uuid NOT NULL UNIQUE,
   name text UNIQUE NOT NULL,
   is_selected BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at timestamptz NOT NULL DEFAULT now()
+  created_at timestamptz NOT NULL DEFAULT now(),
+
+  FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX unique_selected_theme ON themes (is_selected) WHERE is_selected = TRUE;
