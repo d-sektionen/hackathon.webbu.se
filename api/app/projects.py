@@ -60,7 +60,7 @@ async def list_projects(conn: Connection = Depends(get_db)) -> ProjectListRespon
     return ProjectListResponse(projects=project_list)
 
 
-@router.get("/projects/{project_id}")
+@router.get("/projects/{project_id}", tags=["projects"])
 async def get_project(
     project_id: uuid.UUID, conn: Connection = Depends(get_db)
 ) -> ProjectResponse:
