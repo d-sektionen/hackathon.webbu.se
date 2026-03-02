@@ -5,9 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from . import db
-from .auth import router as auth_router
-from .projects import router as projects_router
+from . import auth, db, projects, themes
 
 
 @asynccontextmanager
@@ -29,5 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router)
-app.include_router(projects_router)
+app.include_router(auth.router)
+app.include_router(projects.router)
+app.include_router(themes.router)
