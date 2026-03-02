@@ -17,7 +17,31 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     await db.close_pool(app)
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="HackathIIn",
+    summary="Hackathon API written in FastAPI",
+    version="0.1.0",
+    contact={
+        "name": "WebbU",
+        "url": "https://webbu.se/",
+        "email": "webmaster@d-sektionen.se",
+    },
+    openapi_tags=[
+        {
+            "name": "auth",
+            "description": "Endpoints for user authentication and session management",
+        },
+        {
+            "name": "projects",
+            "description": "Endpoints for creating and listing projects",
+        },
+        {
+            "name": "themes",
+            "description": "Endpoints for suggesting and voting on themes",
+        },
+    ],
+    lifespan=lifespan,
+)
 
 app.add_middleware(
     CORSMiddleware,

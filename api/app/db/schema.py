@@ -28,6 +28,7 @@ class Project:
     owner_user_id: UUID
     created_at: datetime
 
+
 @dataclass
 class Theme:
     id: UUID
@@ -35,6 +36,7 @@ class Theme:
     creator_id: UUID
     is_selected: bool
     created_at: datetime
+
 
 @dataclass
 class ThemeVote:

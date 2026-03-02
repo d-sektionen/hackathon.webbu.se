@@ -32,9 +32,11 @@ class MeResponse(BaseModel):
     is_admin: bool
 
 
-@router.post("/login")
+@router.post("/login", tags=["auth"])
 async def login(
-    response: Response, login: LoginRequest | None = None, conn: Connection = Depends(get_db)
+    response: Response,
+    login: LoginRequest | None = None,
+    conn: Connection = Depends(get_db),
 ) -> AuthResponse:
     if login is None:
         raise HTTPException(
@@ -66,7 +68,7 @@ async def login(
     return AuthResponse(token=str(session.token))
 
 
-@router.post("/signup")
+@router.post("/signup", tags=["auth"])
 async def signup(
     signup_data: SignupRequest, response: Response, conn: Connection = Depends(get_db)
 ) -> AuthResponse:
@@ -89,7 +91,7 @@ async def signup(
     return AuthResponse(token=str(session.token))
 
 
-@router.get("/me")
+@router.get("/me", tags=["auth"])
 async def me(
     response: Response,
     token: Annotated[UUID | None, Cookie()],

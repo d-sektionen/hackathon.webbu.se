@@ -20,5 +20,6 @@ async def create_pool(app: FastAPI) -> None:
     database_url = f"postgresql://{database_user}:{database_password}@postgres:5432/{database_name}"
     app.state.pool = await asyncpg.create_pool(database_url, min_size=1, max_size=10)
 
+
 async def close_pool(app: FastAPI) -> None:
     await app.state.pool.close()

@@ -10,21 +10,26 @@ from .deps import get_current_session, get_db
 
 router = APIRouter()
 
+
 class ProjectRequest(BaseModel):
     name: str
     description: str
     github_url: str | None = None
 
+
 class ProjectResponse(BaseModel):
     project: schema.Project
+
 
 class ProjectListResponse(BaseModel):
     projects: list[schema.Project]
 
+
 class ReadmeResponse(BaseModel):
     content: str
 
-@router.post("/projects")
+
+@router.post("/projects", tags=["projects"])
 async def create_project(
     project_data: ProjectRequest,
     session: schema.Session = Depends(get_current_session),
@@ -48,7 +53,7 @@ async def create_project(
     return ProjectResponse(project=project)
 
 
-@router.get("/projects")
+@router.get("/projects", tags=["projects"])
 async def list_projects(conn: Connection = Depends(get_db)) -> ProjectListResponse:
     project_list = await projects.get_all(conn)
 
@@ -56,7 +61,9 @@ async def list_projects(conn: Connection = Depends(get_db)) -> ProjectListRespon
 
 
 @router.get("/projects/{project_id}")
-async def get_project(project_id: uuid.UUID, conn: Connection = Depends(get_db)) -> ProjectResponse:
+async def get_project(
+    project_id: uuid.UUID, conn: Connection = Depends(get_db)
+) -> ProjectResponse:
     project = await projects.get_by_id(project_id, conn)
     if project is None:
         raise HTTPException(
@@ -66,7 +73,7 @@ async def get_project(project_id: uuid.UUID, conn: Connection = Depends(get_db))
     return ProjectResponse(project=project)
 
 
-@router.put("/projects/{project_id}")
+@router.put("/projects/{project_id}", tags=["projects"])
 async def update_project(
     project_id: uuid.UUID,
     project_data: ProjectRequest,
@@ -103,10 +110,10 @@ async def update_project(
     return ProjectResponse(project=updated_project)
 
 
-@router.get(
-    "/projects/{project_id}/readme",
-)
-async def get_github_readme(project_id: uuid.UUID, conn: Connection = Depends(get_db)) -> ReadmeResponse:
+@router.get("/projects/{project_id}/readme", tags=["projects"])
+async def get_github_readme(
+    project_id: uuid.UUID, conn: Connection = Depends(get_db)
+) -> ReadmeResponse:
     """Fetch the project README via the GitHub API.
 
     Args:

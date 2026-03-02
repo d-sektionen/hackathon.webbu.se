@@ -10,29 +10,35 @@ from .deps import get_current_session, get_db
 
 router = APIRouter()
 
+
 class ThemeRequest(BaseModel):
     name: Annotated[str, StringConstraints(min_length=2)]
+
 
 class ThemeListResponse(BaseModel):
     themes: list[schema.Theme]
 
+
 class ThemeResponse(BaseModel):
     theme: schema.Theme
 
+
 class VoteResponse(BaseModel):
     vote: schema.ThemeVote
+
 
 class VotesResponse(BaseModel):
     votes: list[schema.ThemeVote]
 
 
-@router.get("/themes")
+@router.get("/themes", tags=["themes"])
 async def list_themes(conn: Connection = Depends(get_db)) -> ThemeListResponse:
     theme_list = await themes.get_all(conn)
 
     return ThemeListResponse(themes=theme_list)
 
-@router.post("/themes")
+
+@router.post("/themes", tags=["themes"])
 async def suggest_theme(
     theme_data: ThemeRequest,
     session: schema.Session = Depends(get_current_session),
@@ -41,7 +47,8 @@ async def suggest_theme(
     theme = await themes.add(theme_data.name, session.user_id, conn)
     return ThemeResponse(theme=theme)
 
-@router.post("/themes/{theme_id}/vote")
+
+@router.post("/themes/{theme_id}/vote", tags=["themes"])
 async def vote_theme(
     theme_id: UUID,
     session: schema.Session = Depends(get_current_session),
@@ -50,18 +57,21 @@ async def vote_theme(
     theme = await themes.get_by_id(theme_id, conn)
     if theme is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="no theme found with the provided id"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="no theme found with the provided id",
         )
 
     vote = await themes.add_vote(session.user_id, theme_id, conn)
     if vote is None:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="failed to cast vote"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="failed to cast vote",
         )
 
     return VoteResponse(vote=vote)
 
-@router.delete("/themes/{theme_id}/vote")
+
+@router.delete("/themes/{theme_id}/vote", tags=["themes"])
 async def remove_vote(
     theme_id: UUID,
     session: schema.Session = Depends(get_current_session),
@@ -70,13 +80,15 @@ async def remove_vote(
     vote = await themes.get_vote(session.user_id, theme_id, conn)
     if vote is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="you have not voted for this theme"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="you have not voted for this theme",
         )
 
     await themes.remove_vote(session.user_id, theme_id, conn)
     return None
 
-@router.get("/themes/votes")
+
+@router.get("/themes/votes", tags=["themes"])
 async def list_votes(
     session: schema.Session = Depends(get_current_session),
     conn: Connection = Depends(get_db),
