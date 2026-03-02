@@ -6,7 +6,7 @@ from asyncpg import Connection
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 
-from .db import schema, sessions, users
+from .db import sessions, users
 from .deps import get_db
 
 router = APIRouter()
