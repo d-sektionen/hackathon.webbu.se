@@ -25,7 +25,7 @@ async def add(
 
 
 async def get_all(db: Connection) -> list[Project]:
-    projects = await db.fetch("SELECT * FROM projects")
+    projects = await db.fetch("SELECT * FROM projects ORDER BY name DESC")
     return [Project(**project) for project in projects]
 
 

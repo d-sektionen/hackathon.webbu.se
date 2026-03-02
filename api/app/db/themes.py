@@ -6,7 +6,7 @@ from .schema import Theme, ThemeVote
 
 
 async def get_all(db: Connection) -> list[Theme]:
-    themes = await db.fetch("SELECT * FROM themes")
+    themes = await db.fetch("SELECT * FROM themes ORDER BY created_at DESC")
     return [Theme(**theme) for theme in themes]
 
 async def add(name: str, creator_id: UUID, db: Connection) -> Theme:
