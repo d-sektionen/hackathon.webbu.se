@@ -29,7 +29,7 @@ async def list_themes(conn: Connection = Depends(get_db)) -> ThemeListResponse:
     return ThemeListResponse(themes=theme_list)
 
 @router.post("/themes")
-async def create_project(
+async def suggest_theme(
     theme_data: ThemeRequest,
     session: schema.Session = Depends(get_current_session),
     conn: Connection = Depends(get_db),
@@ -43,7 +43,7 @@ async def create_project(
     return ThemeResponse(theme=theme)
 
 @router.post("/themes/{theme_id}/vote")
-async def vote_project(
+async def vote_theme(
     theme_id: UUID,
     session: schema.Session = Depends(get_current_session),
     conn: Connection = Depends(get_db),
