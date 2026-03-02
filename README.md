@@ -32,6 +32,7 @@ CREATE TABLE projects (
 CREATE TABLE themes (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text UNIQUE NOT NULL,
+  creator_id uuid NOT NULL UNIQUE,
   is_selected BOOLEAN NOT NULL DEFAULT FALSE,
   created_at timestamptz NOT NULL DEFAULT now()
 );
