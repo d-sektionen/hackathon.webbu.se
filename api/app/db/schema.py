@@ -32,6 +32,7 @@ class Project:
 class Theme:
     id: UUID
     name: str
+    creator_id: UUID
     is_selected: bool
     created_at: datetime
 
