@@ -4,7 +4,7 @@ from uuid import UUID
 import argon2
 from asyncpg import Connection
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 from .db import sessions, users
 from .deps import get_db
@@ -13,12 +13,12 @@ router = APIRouter()
 
 
 class LoginRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
 class SignupRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
@@ -28,7 +28,7 @@ class AuthResponse(BaseModel):
 
 class MeResponse(BaseModel):
     id: UUID
-    email: str
+    email: EmailStr
     is_admin: bool
 
 
