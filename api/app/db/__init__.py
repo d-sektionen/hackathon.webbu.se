@@ -1,7 +1,6 @@
 import os
 
 import asyncpg
-from asyncpg import Connection, Record
 from fastapi import FastAPI
 
 
