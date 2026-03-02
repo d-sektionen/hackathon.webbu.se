@@ -4,7 +4,7 @@ from uuid import UUID
 import argon2
 from asyncpg import Connection
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, StringConstraints
 
 from .db import sessions, users
 from .deps import get_db
@@ -19,7 +19,7 @@ class LoginRequest(BaseModel):
 
 class SignupRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: Annotated[str, StringConstraints(min_length=8, max_length=128)]
 
 
 class AuthResponse(BaseModel):
@@ -70,12 +70,6 @@ async def login(
 async def signup(
     signup_data: SignupRequest, response: Response, conn: Connection = Depends(get_db)
 ) -> AuthResponse:
-    if len(signup_data.password) < 8:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Password must be at least 8 characters long",
-        )
-
     previous_user = await users.get_by_email(signup_data.email, conn)
     if previous_user is not None:
         raise HTTPException(
