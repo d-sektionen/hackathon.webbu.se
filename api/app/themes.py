@@ -21,6 +21,9 @@ class ThemeResponse(BaseModel):
 class VoteResponse(BaseModel):
     vote: schema.ThemeVote
 
+class VotesResponse(BaseModel):
+    votes: list[schema.ThemeVote]
+
 
 @router.get("/themes")
 async def list_themes(conn: Connection = Depends(get_db)) -> ThemeListResponse:
@@ -48,7 +51,7 @@ async def vote_theme(
     session: schema.Session = Depends(get_current_session),
     conn: Connection = Depends(get_db),
 ) -> VoteResponse:
-    theme = themes.get_by_id(theme_id, conn)
+    theme = await themes.get_by_id(theme_id, conn)
     if theme is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="no theme found with the provided id"
@@ -61,3 +64,26 @@ async def vote_theme(
         )
 
     return VoteResponse(vote=vote)
+
+@router.delete("/themes/{theme_id}/vote")
+async def remove_vote(
+    theme_id: UUID,
+    session: schema.Session = Depends(get_current_session),
+    conn: Connection = Depends(get_db),
+) -> None:
+    vote = await themes.get_vote(session.user_id, theme_id, conn)
+    if vote is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="you have not voted for this theme"
+        )
+
+    await themes.remove_vote(session.user_id, theme_id, conn)
+    return None
+
+@router.get("/themes/votes")
+async def list_votes(
+    session: schema.Session = Depends(get_current_session),
+    conn: Connection = Depends(get_db),
+) -> VotesResponse:
+    votes = await themes.get_votes_by_user_id(session.user_id, conn)
+    return VotesResponse(votes=votes)
