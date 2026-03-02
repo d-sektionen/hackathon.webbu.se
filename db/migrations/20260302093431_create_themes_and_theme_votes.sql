@@ -20,6 +20,6 @@ CREATE TABLE theme_votes (
 
 -- migrate:down
 
-DROP TABLE themes;
 DROP INDEX unique_selected_theme;
 DROP TABLE theme_votes;
+DROP TABLE themes;
